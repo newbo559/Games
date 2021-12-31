@@ -83,7 +83,7 @@ lib.ssMetadata = [
 
 
 
-(lib.sword = function(mode,startPosition,loop,reversed) {
+(lib.Sword = function(mode,startPosition,loop,reversed) {
 if (loop == null) { loop = true; }
 if (reversed == null) { reversed = false; }
 	var props = new Object();
@@ -101,10 +101,28 @@ if (reversed == null) { reversed = false; }
 		this.addEventListener("click",()=>{
 			this.gotoAndPlay("attack");
 		})
+		var iskeydown = false;
+		window.addEventListener("keydown",(e)=>{
+			if(iskeydown == true) return;
+			if(e.keyCode == 32){
+			iskeydown = true;
+			this.gotoAndPlay("attack");	
+			}
+		})
+	}
+	this.frame_3 = function() {
+		var iskeydown = false;
+		window.addEventListener("keydown",(e)=>{
+			if(iskeydown == true) return;
+			if(e.keyCode == 32){
+			iskeydown = true;
+			this.gotoAndPlay("attack");	
+			}
+		})
 	}
 
 	// actions tween:
-	this.timeline.addTween(cjs.Tween.get(this).call(this.frame_0).wait(17));
+	this.timeline.addTween(cjs.Tween.get(this).call(this.frame_0).wait(3).call(this.frame_3).wait(14));
 
 	// 圖層_1
 	this.instance = new lib.sword01();
@@ -149,7 +167,7 @@ if (reversed == null) { reversed = false; }
 	cjs.MovieClip.apply(this,[props]);
 
 	// 圖層_2
-	this.instance = new lib.sword();
+	this.instance = new lib.Sword();
 	this.instance.setTransform(380.3,197,1,1,0,0,0,33,33);
 
 	this.timeline.addTween(cjs.Tween.get(this.instance).wait(1));
@@ -172,7 +190,7 @@ lib.properties = {
 	color: "#FFFFFF",
 	opacity: 1.00,
 	manifest: [
-		{src:"images/Mygame_atlas_1.png?1640936500257", id:"Mygame_atlas_1"}
+		{src:"images/Mygame_atlas_1.png?1640961093435", id:"Mygame_atlas_1"}
 	],
 	preloads: []
 };

@@ -43,6 +43,79 @@
         }
         exportRoot = new lib.Mygame();
         stage = new lib.Stage(canvas);	
+
+        //programming start 
+
+        var isKeydown = false;
+        var droptime = 100;
+
+        window.addEventListener("keydown",keydownfn);
+        window.addEventListener("keyup",keyupfn);
+        
+        
+        var weapon = new lib.Sword();
+        weapon.x = 100;
+        weapon.y = 100;
+        weapon.scale = 2;
+        exportRoot.addChild(weapon);
+
+        var drop = setInterval(()=>{
+            let  coin = new lib.Sword();
+            coin.x = Math.floor( Math.random() * (660-30)+ 10); 
+            coin.y = -40;
+            coin.scale = Math.random()* 2 + 0.5;
+            console.log(coin.scale);
+            exportRoot.addChildAt(coin,1);
+
+        
+
+
+
+            createjs.Tween.get(coin)
+            .to({y : 400}, 3000)
+            .call(()=>{
+            exportRoot.removeChild(coin);
+
+
+            });
+            console.log(coin.x);
+
+        },droptime);
+        
+        
+        
+        
+        
+        
+    
+        
+        
+        
+                function keydownfn(e){
+                    if(isKeydown == true) return;
+                    if(e.keyCode == 32){
+                        isKeydown = true;
+                        weapon.gotoAndPlay("attack");
+                    }
+                }
+                function keyupfn(e){
+                    isKeydown = false;
+                    // weapon.gotoAndPlay("idle");
+        
+                }
+        
+        
+        
+
+
+
+
+
+
+
+
+
+        
         //Registers the "tick" event listener.
         fnStartAnimation = function() {
             stage.addChild(exportRoot);
