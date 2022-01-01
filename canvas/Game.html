@@ -47,7 +47,7 @@
             stage = new lib.Stage(canvas);
 
             //programming start 
-            var speed = 5;
+            var speed = 2;
             var isFlyKeydown = false;
             var isKeydown = false;
             var direction = 1;
@@ -105,7 +105,7 @@
 
                 createjs.Tween.get(coin)
                 .to({ x:character.x -60*direction,y:character.y-10 ,rotation:90*direction,scale:1.5}, 0)
-                .to({ x:1800*direction,y:Math.random()*600 -100}, dropTransition/1.5)
+                .to({ x:1800*direction,y:Math.random()*400 -200 +character.y}, dropTransition/1.5)
                 .to({ x:Math.random()*(700-20) +20,y:-150,scale:Math.random()*1.5 + 0.5,rotation:Math.random()*360}, 0)
                 .to({ y:Math.random()*600 +400}, dropTransition)
 
