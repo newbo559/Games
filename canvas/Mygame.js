@@ -3,7 +3,7 @@
 var p; // shortcut to reference prototypes
 var lib={};var ss={};var img={};
 lib.ssMetadata = [
-		{name:"Mygame_atlas_1", frames: [[0,0,700,400],[702,0,66,66],[702,68,66,66],[702,136,66,66],[702,204,66,66],[702,272,66,66],[702,340,66,66],[0,402,66,66]]}
+		{name:"Mygame_atlas_1", frames: [[0,0,700,400],[702,0,74,134],[702,136,66,66],[702,204,66,66],[702,272,66,66],[702,340,66,66],[0,402,66,66],[68,402,66,66],[136,402,66,66]]}
 ];
 
 
@@ -34,53 +34,76 @@ lib.ssMetadata = [
 
 
 
-(lib.sword01 = function() {
+(lib.inabakumori01 = function() {
 	this.initialize(ss["Mygame_atlas_1"]);
 	this.gotoAndStop(1);
 }).prototype = p = new cjs.Sprite();
 
 
 
-(lib.sword02 = function() {
+(lib.sword01 = function() {
 	this.initialize(ss["Mygame_atlas_1"]);
 	this.gotoAndStop(2);
 }).prototype = p = new cjs.Sprite();
 
 
 
-(lib.sword03 = function() {
+(lib.sword02 = function() {
 	this.initialize(ss["Mygame_atlas_1"]);
 	this.gotoAndStop(3);
 }).prototype = p = new cjs.Sprite();
 
 
 
-(lib.sword04 = function() {
+(lib.sword03 = function() {
 	this.initialize(ss["Mygame_atlas_1"]);
 	this.gotoAndStop(4);
 }).prototype = p = new cjs.Sprite();
 
 
 
-(lib.sword05 = function() {
+(lib.sword04 = function() {
 	this.initialize(ss["Mygame_atlas_1"]);
 	this.gotoAndStop(5);
 }).prototype = p = new cjs.Sprite();
 
 
 
-(lib.sword06 = function() {
+(lib.sword05 = function() {
 	this.initialize(ss["Mygame_atlas_1"]);
 	this.gotoAndStop(6);
 }).prototype = p = new cjs.Sprite();
 
 
 
-(lib.sword07 = function() {
+(lib.sword06 = function() {
 	this.initialize(ss["Mygame_atlas_1"]);
 	this.gotoAndStop(7);
 }).prototype = p = new cjs.Sprite();
 
+
+
+(lib.sword07 = function() {
+	this.initialize(ss["Mygame_atlas_1"]);
+	this.gotoAndStop(8);
+}).prototype = p = new cjs.Sprite();
+// helper functions:
+
+function mc_symbol_clone() {
+	var clone = this._cloneProps(new this.constructor(this.mode, this.startPosition, this.loop, this.reversed));
+	clone.gotoAndStop(this.currentFrame);
+	clone.paused = this.paused;
+	clone.framerate = this.framerate;
+	return clone;
+}
+
+function getMCSymbolPrototype(symbol, nominalBounds, frameBounds) {
+	var prototype = cjs.extend(symbol, cjs.MovieClip);
+	prototype.clone = mc_symbol_clone;
+	prototype.nominalBounds = nominalBounds;
+	prototype.frameBounds = frameBounds;
+	return prototype;
+	}
 
 
 (lib.Sword = function(mode,startPosition,loop,reversed) {
@@ -154,6 +177,27 @@ if (reversed == null) { reversed = false; }
 p.nominalBounds = new cjs.Rectangle(-1,1,68,66);
 
 
+(lib.Inabakumori = function(mode,startPosition,loop,reversed) {
+if (loop == null) { loop = true; }
+if (reversed == null) { reversed = false; }
+	var props = new Object();
+	props.mode = mode;
+	props.startPosition = startPosition;
+	props.labels = {};
+	props.loop = loop;
+	props.reversed = reversed;
+	cjs.MovieClip.apply(this,[props]);
+
+	// 圖層_1
+	this.instance = new lib.inabakumori01();
+
+	this.timeline.addTween(cjs.Tween.get(this.instance).wait(1));
+
+	this._renderFirstFrame();
+
+}).prototype = getMCSymbolPrototype(lib.Inabakumori, new cjs.Rectangle(0,0,74,134), null);
+
+
 // stage content:
 (lib.Mygame = function(mode,startPosition,loop,reversed) {
 if (loop == null) { loop = true; }
@@ -173,9 +217,12 @@ if (reversed == null) { reversed = false; }
 	this.timeline.addTween(cjs.Tween.get(this.instance).wait(1));
 
 	// 圖層_1
-	this.instance_1 = new lib.backgroundtree_700x400();
+	this.instance_1 = new lib.Inabakumori();
+	this.instance_1.setTransform(66,278,1,1,0,0,0,37,67);
 
-	this.timeline.addTween(cjs.Tween.get(this.instance_1).wait(1));
+	this.instance_2 = new lib.backgroundtree_700x400();
+
+	this.timeline.addTween(cjs.Tween.get({}).to({state:[{t:this.instance_2},{t:this.instance_1}]}).wait(1));
 
 	this._renderFirstFrame();
 
@@ -190,7 +237,7 @@ lib.properties = {
 	color: "#FFFFFF",
 	opacity: 1.00,
 	manifest: [
-		{src:"images/Mygame_atlas_1.png?1640961093435", id:"Mygame_atlas_1"}
+		{src:"images/Mygame_atlas_1.png?1641021545657", id:"Mygame_atlas_1"}
 	],
 	preloads: []
 };
