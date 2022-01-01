@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=, initial-scale=1.0">
     <title>MyGame</title>
+    <link rel="icon" href="images/sword-3.png" sizes="32x32">
     <link rel="stylesheet" href="../css/MyGame.css">
     <script src="https://code.createjs.com/1.0.0/createjs.min.js"></script>
     <script src="Mygame.js?1640936500373"></script>
@@ -46,54 +47,70 @@
             stage = new lib.Stage(canvas);
 
             //programming start 
-
+            var speed = 5;
+            var isFlyKeydown = false;
             var isKeydown = false;
-
+            var direction = 1;
+            var directionY = 1;
+            window.addEventListener("keydown", attackfn);
             window.addEventListener("keydown", keydownfn);
             window.addEventListener("keyup", keyupfn);
+            window.addEventListener("keydown", flykeydownfn);
+            window.addEventListener("keyup", flykeyupfn);
 
             var weapon = new lib.Sword();
             weapon.x = 100;
-            weapon.y = 100;
+            weapon.y = 200;
             weapon.scale = 2;
             exportRoot.addChild(weapon);
 
-            var character = new lib.Inabakumori();
+            function attackfn(e){
+                if(e.keyCode == 32){
+                    weapon.gotoAndPlay("attack");
+                }
+
+            }
+
+            var character = new lib.Inabakumori01();
             var characterClick = false;
-            character.x = 280;
-            character.y = 40;
-            exportRoot.addChild(character);
+            character.x = 320;
+            character.y = 100;
+            exportRoot.addChildAt(character,2);
 
             character.addEventListener("click", () => {
                 if (characterClick == false) {
-                    dropTransition = 500;
                     characterClick = true;
+                    dropDel = false;
                     console.log(dropTime);
                 } else {
-                    dropTransition = 3000;
                     characterClick = false;
+                    dropDel = true;
                     console.log(dropTime);
-
-
                 }
-
             })
 
             //drop 
-            var dropTime = 30;
-            var dropTransition = 3000;
+            var dropDel = true;
+            var dropTime = 20;
+            var dropTransition = 1500;
             var drop = setInterval(() => {
+                if(dropDel == true) return;
                 var coin = new lib.Sword();
                 coin.x = Math.floor(Math.random() * (660 - 30) + 30);
-                coin.y = -40;
-                coin.scale = Math.random() * 2 + 0.5;
+                coin.y = -120;
+                coin.scale = Math.random() * 1.5 + 0.8;
                 coin.rotation = Math.floor(Math.random() * 360);
 
                 exportRoot.addChildAt(coin, 1); 
 
                 createjs.Tween.get(coin)
-                    .to({ y: 500 }, dropTransition)
-                    .call(() => {
+                .to({ x:character.x -60,y:character.y -20,rotation:90,scale:1.5}, 0)
+                .to({ x:1800*direction,y:Math.random()*600 -100}, dropTransition/1.5)
+                .to({ rotation:180,x:Math.random()*(700-20) +20,y:-150,scale:Math.random()*1.5 + 0.5,rotation:Math.random()*360}, 0)
+                .to({ y:Math.random()*600 +400}, dropTransition)
+
+
+                .call(() => {
                         exportRoot.removeChild(coin);
 
                     });
@@ -101,21 +118,43 @@
             }, dropTime);
 
 
-
+        // move function
             function keydownfn(e) {
                 if (isKeydown == true) return;
-                if (e.keyCode == 32) {
+                if(e.keyCode == 37 || e.keyCode == 39){
                     isKeydown = true;
-                    weapon.gotoAndPlay("attack");
+                    direction = e.keyCode == 39 ? 1 : -1;
+                    console.log(direction);
                 }
             }
             function keyupfn(e) {
                 isKeydown = false;
                 // weapon.gotoAndPlay("idle");
-
+            }
+            function flykeydownfn(e) {
+                if (isFlyKeydown == true) return;
+                if(e.keyCode == 38 || e.keyCode == 40){
+                    isFlyKeydown = true;
+                    directionY = e.keyCode == 38 ? 1 : -1;
+                }    
+            }
+            function flykeyupfn(e) {
+                isFlyKeydown = false;
             }
 
 
+            createjs.Ticker.addEventListener("tick",tickFn);
+            function tickFn(e){
+                if(isKeydown == true){
+                        character.x += speed * direction;
+                        character.scaleX = direction;
+                        console.log(character.x);
+                }
+                if(isFlyKeydown == true){
+                        character.y -= speed * directionY;
+                        console.log(character.y);
+                }
+            }
 
 
 
